@@ -21,3 +21,14 @@ pub struct RegistryRecord {
     pub authority: PluginAuthority,
     pub offset: u64,
 }
+
+impl RegistryRecord {
+    pub fn len(&self) -> usize {
+        1 + 1
+            + 8
+            + match self.authority {
+                PluginAuthority::Address { address: _ } => 32,
+                _ => 0,
+            }
+    }
+}

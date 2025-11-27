@@ -36,7 +36,9 @@ impl From<BaseAuthority> for PluginAuthority {
             AuthorityType::None => PluginAuthority::None,
             AuthorityType::Owner => PluginAuthority::Owner,
             AuthorityType::UpdateAuthority => PluginAuthority::UpdateAuthority,
-            AuthorityType::Address=> PluginAuthority::Address { address: authority.address.unwrap() },
+            AuthorityType::Address => PluginAuthority::Address {
+                address: authority.address.unwrap(),
+            },
         }
     }
 }
