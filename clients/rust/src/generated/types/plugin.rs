@@ -52,3 +52,9 @@ pub enum Plugin {
     FreezeExecute(FreezeExecute),
     PermanentFreezeExecute(PermanentFreezeExecute),
 }
+
+impl Plugin {
+    pub fn to_vec(&self) -> Result<Vec<u8>, std::io::Error> {
+        borsh::to_vec(self)
+    }
+}
