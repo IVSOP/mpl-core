@@ -11,6 +11,8 @@ use anchor_lang::prelude::{AnchorDeserialize, AnchorSerialize};
 use borsh::{BorshDeserialize, BorshSerialize};
 use solana_program::pubkey::Pubkey;
 
+use crate::{AuthorityType, BaseAuthority};
+
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[cfg_attr(not(feature = "anchor"), derive(BorshSerialize, BorshDeserialize))]
 #[cfg_attr(feature = "anchor", derive(AnchorSerialize, AnchorDeserialize))]
@@ -26,4 +28,15 @@ pub enum PluginAuthority {
         )]
         address: Pubkey,
     },
+}
+
+impl From<BaseAuthority> for PluginAuthority {
+    fn from(authority: BaseAuthority) -> Self {
+        match authority.authority_type {
+            AuthorityType::None => PluginAuthority::None,
+            AuthorityType::Owner => PluginAuthority::Owner,
+            AuthorityType::UpdateAuthority => PluginAuthority::UpdateAuthority,
+            AuthorityType::Address=> PluginAuthority::Address { address: authority.address.unwrap() },
+        }
+    }
 }
