@@ -128,7 +128,9 @@ pub fn fetch_plugins(account_data: &[u8]) -> Result<Vec<RegistryRecord>, std::io
 
 /// Fetch the plugin registry, dropping any unknown plugins (i.e. `PluginType`s that are too new
 ///  for this client to know about).
-pub fn fetch_collection_plugins(account_data: &[u8]) -> Result<Vec<RegistryRecord>, std::io::Error> {
+pub fn fetch_collection_plugins(
+    account_data: &[u8],
+) -> Result<Vec<RegistryRecord>, std::io::Error> {
     let asset = BaseCollectionV1::from_bytes(account_data)?;
 
     let header = PluginHeaderV1::from_bytes(&account_data[asset.len()..])?;

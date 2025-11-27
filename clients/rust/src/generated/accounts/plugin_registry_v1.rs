@@ -29,6 +29,27 @@ impl PluginRegistryV1 {
         let mut data = data;
         Self::deserialize(&mut data)
     }
+
+    pub fn to_vec(&self) -> Result<Vec<u8>, std::io::Error> {
+        borsh::to_vec(self)
+    }
+
+    /// Increase the offsets of all plugins after a certain offset.
+    pub(crate) fn bump_offsets(&mut self, size_diff: isize) -> Result<(), std::io::Error> {
+        for record in &mut self.registry {
+            record.offset = ((record.offset as isize) + size_diff) as u64;
+        }
+
+        for record in &mut self.external_registry {
+            record.offset = ((record.offset as isize) + size_diff) as u64;
+
+            if let Some(data_offset) = record.data_offset {
+                record.data_offset = Some(((data_offset as isize) + size_diff) as u64);
+            }
+        }
+
+        Ok(())
+    }
 }
 
 impl<'a> TryFrom<&solana_program::account_info::AccountInfo<'a>> for PluginRegistryV1 {
