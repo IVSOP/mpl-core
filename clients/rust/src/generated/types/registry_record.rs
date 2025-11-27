@@ -31,4 +31,8 @@ impl RegistryRecord {
                 _ => 0,
             }
     }
+
+    pub fn to_vec(&self) -> Result<Vec<u8>, std::io::Error> {
+        borsh::to_vec(self)
+    }
 }
