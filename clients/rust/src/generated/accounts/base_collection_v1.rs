@@ -35,6 +35,10 @@ impl BaseCollectionV1 {
         let mut data = data;
         Self::deserialize(&mut data)
     }
+
+    pub fn to_vec(&self) -> Result<Vec<u8>, std::io::Error> {
+        borsh::to_vec(self)
+    }
 }
 
 impl<'a> TryFrom<&solana_program::account_info::AccountInfo<'a>> for BaseCollectionV1 {
